@@ -7,6 +7,7 @@ import busIcon from '../../assets/images/icons/bus.svg'
 import planeIcon from '../../assets/images/icons/plane.svg'
 import { PlaneData } from './components/PlaneData'
 import { Button } from '../../components/Button'
+import { EmptyState } from '../../components/EmptyState'
 
 export interface ICalculatorData {
   car: {
@@ -56,14 +57,84 @@ export function Calculator() {
       destinationCity: '',
     },
   })
+  const isEmpty =
+    !data.car.active &&
+    !data.bike.active &&
+    !data.bus.active &&
+    !data.plane.active
+  const canCalculate =
+    (data.car.active ? !!data.car.distance : true) &&
+    (data.bike.active ? !!data.bike.distance : true) &&
+    (data.bus.active ? !!data.bus.distance : true) &&
+    (data.plane.active
+      ? !!data.plane.originState &&
+        !!data.plane.originCity &&
+        !!data.plane.destinationState &&
+        !!data.plane.destinationCity
+      : true)
 
   function handleToggleVehicle(vehicle: keyof ICalculatorData) {
     setData((prevState) => {
       const newData = { ...prevState }
+
+      if (vehicle === 'car') {
+        newData.car.distance = ''
+      }
+
+      if (vehicle === 'bike') {
+        newData.bike.distance = ''
+      }
+
+      if (vehicle === 'bus') {
+        newData.bus.distance = ''
+        newData.bus.type = 'intercity'
+      }
+
+      if (vehicle === 'plane') {
+        newData.plane.originState = ''
+        newData.plane.originCity = ''
+        newData.plane.destinationState = ''
+        newData.plane.destinationCity = ''
+      }
+
       newData[vehicle].active = !newData[vehicle].active
 
       return newData
     })
+  }
+
+  function handleCalculate() {
+    let total = 0
+
+    if (data.car.active) {
+      if (data.car.fuel === 'gasoline') {
+        total += Number(data.car.distance) * 0.217
+      }
+
+      if (data.car.fuel === 'alcohol') {
+        total += Number(data.car.distance) * 0.175
+      }
+
+      if (data.car.fuel === 'diesel') {
+        total += Number(data.car.distance) * 0.88
+      }
+    }
+
+    if (data.bike.active) {
+      total += Number(data.bike.distance) * 0.064
+    }
+
+    if (data.bus.active) {
+      if (data.bus.type === 'intercity') {
+        total += Number(data.bus.distance) * 0.72339
+      }
+
+      if (data.bus.type === 'urban') {
+        total += Number(data.bus.distance) * 1.8084779
+      }
+    }
+
+    console.log(total)
   }
 
   return (
@@ -116,6 +187,7 @@ export function Calculator() {
           </div>
           <div className="selected-data">
             <h3>Veículos Selecionados</h3>
+            {isEmpty && <EmptyState />}
             {data.car.active && (
               <div className="data-card">
                 <strong>Carro</strong>
@@ -217,7 +289,9 @@ export function Calculator() {
               <PlaneData data={data.plane} setData={setData} />
             )}
           </div>
-          <Button>Calcular</Button>
+          <Button onClick={handleCalculate} disabled={isEmpty || !canCalculate}>
+            Calcular
+          </Button>
         </div>
       </main>
     </Container>

@@ -15,4 +15,8 @@ export const Button = styled.button`
   &:hover {
     filter: brightness(1.05) saturate(0.9);
   }
+
+  &:disabled {
+    filter: saturate(0.1) opacity(0.5);
+  }
 `

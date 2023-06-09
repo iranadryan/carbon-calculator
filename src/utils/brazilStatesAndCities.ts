@@ -26,7 +26,7 @@ export const states = [
   ['SP', 'São Paulo'],
   ['SE', 'Sergipe'],
   ['TO', 'Tocantins'],
-];
+]
 
 export const cities = [
   [
@@ -5723,4 +5723,4 @@ export const cities = [
       ['Xambioá'],
     ],
   ],
-];
+]
