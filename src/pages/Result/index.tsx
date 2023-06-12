@@ -36,11 +36,13 @@ export function Result() {
       <main>
         <div className="content">
           <h2>Resultado do Cálculo</h2>
-          <p>Baseado nos dados fornecidos a quantidade carbono emitido é de:</p>
-          <span className="result-value">{formatNumber(total)} Kg</span>
+          <p>Baseado nas suas respostas sua emissão foi de:</p>
+          <span className="result-value">
+            {formatNumber(total)} Kg de CO<sub>2</sub>
+          </span>
           <p className="contact-text">
-            Insira seu nome e número do Whatsapp para saber quando seu caborno
-            for neutralizado.
+            Insira seu nome e Whatsapp para receber os dados referentes a
+            neutralização deste evento assim que eles estiverem disponíveis.
           </p>
           <div className="contact-input">
             <input
@@ -60,6 +62,7 @@ export function Result() {
               }}
             />
           </div>
+          <p className="greetings">Obrigado por participar</p>
           <Button onClick={handleSubmitEmission}>Finalizar</Button>
         </div>
       </main>

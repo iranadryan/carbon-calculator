@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
 import headerBackground from '../../assets/images/header-bg-2.png'
+import bgImage from '../../assets/images/bg.png'
 
 export const Container = styled.div`
   height: 100%;
@@ -25,10 +26,11 @@ export const Container = styled.div`
 
   main {
     width: 100%;
-    background: ${({ theme }) => theme.colors.base.white};
+    background: url(${bgImage}) ${({ theme }) => theme.colors.base.white};
     border-radius: 48px 48px 0 0;
     margin-top: -48px;
     display: flex;
+    flex: 1;
     justify-content: center;
 
     .content {

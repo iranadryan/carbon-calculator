@@ -1,5 +1,6 @@
 import { styled } from 'styled-components'
 import headerBackground from '../../assets/images/header-bg-2.png'
+import bgImage from '../../assets/images/bg.png'
 
 export const Container = styled.div`
   height: 100%;
@@ -25,10 +26,11 @@ export const Container = styled.div`
 
   main {
     width: 100%;
-    background: ${({ theme }) => theme.colors.base.white};
+    background: url(${bgImage}) ${({ theme }) => theme.colors.base.white};
     border-radius: 48px 48px 0 0;
     margin-top: -48px;
     display: flex;
+    flex: 1;
     justify-content: center;
 
     .content {
@@ -52,18 +54,25 @@ export const Container = styled.div`
 
       > p {
         margin-top: 12px;
+        text-align: center;
       }
 
       .result-value {
         font-size: 48px;
-        font-weight: 600;
+        font-weight: 700;
         align-self: center;
         margin-top: 32px;
+        color: ${({ theme }) => theme.colors.primary[500]};
+        background: ${({ theme }) => theme.gradients.card};
+        padding: 16px;
+        box-shadow: ${({ theme }) => theme.shadows.card};
+        border-radius: 16px;
       }
 
       .contact-text {
         max-width: 664px;
         margin-top: 32px;
+        text-align: left;
       }
 
       .contact-input {
@@ -91,8 +100,13 @@ export const Container = styled.div`
         }
       }
 
+      .greetings {
+        margin-top: 72px;
+        font-weight: 600;
+      }
+
       button {
-        margin: 32px auto 48px;
+        margin: 12px auto 48px;
       }
     }
   }

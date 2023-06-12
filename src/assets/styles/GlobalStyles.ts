@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import bgImage from '../images/bg.png'
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -8,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background: ${({ theme }) => theme.colors.base.white};
+    background: url(${bgImage}) ${({ theme }) => theme.colors.base.white};
     font-family: 'Manrope', sans-serif;
     font-size: 16px;
     color: ${({ theme }) => theme.colors.base[700]};
@@ -21,7 +22,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   button {
-    appearence: none;
+    appearance: none;
     cursor: pointer;
   }
 
@@ -31,7 +32,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
   }
   input[type=number] {
-    -moz-appearance: textfield;
+    appearance: none;
   }
 
   p {
