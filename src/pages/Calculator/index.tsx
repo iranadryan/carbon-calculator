@@ -8,6 +8,10 @@ import planeIcon from '../../assets/images/icons/plane.svg'
 import { PlaneData } from './components/PlaneData'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
+import { getDistanceFromLatLon } from '../../utils/getDistanceFromLatLon'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { Loader } from '../../components/Loader'
 
 export interface ICalculatorData {
   car: {
@@ -34,6 +38,7 @@ export interface ICalculatorData {
 }
 
 export function Calculator() {
+  const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<ICalculatorData>({
     car: {
       active: false,
@@ -57,6 +62,8 @@ export function Calculator() {
       destinationCity: '',
     },
   })
+  const navigate = useNavigate()
+
   const isEmpty =
     !data.car.active &&
     !data.bike.active &&
@@ -103,7 +110,27 @@ export function Calculator() {
     })
   }
 
-  function handleCalculate() {
+  async function handleGetDistance(origin: string, destination: string) {
+    const { data: originData } = await axios.get(
+      encodeURI(`https://geocode.maps.co/search?q=${origin}`),
+    )
+    const { data: destinationData } = await axios.get(
+      encodeURI(`https://geocode.maps.co/search?q=${destination}`),
+    )
+    const distance = Math.round(
+      getDistanceFromLatLon(
+        originData[0].lat,
+        originData[0].lon,
+        destinationData[0].lat,
+        destinationData[0].lon,
+      ),
+    )
+
+    return distance
+  }
+
+  async function handleCalculate() {
+    setIsLoading(true)
     let total = 0
 
     if (data.car.active) {
@@ -134,11 +161,36 @@ export function Calculator() {
       }
     }
 
-    console.log(total)
+    if (data.plane.active) {
+      const distance = await handleGetDistance(
+        `${data.plane.originCity}, ${data.plane.originState}, Brazil`,
+        `${data.plane.destinationCity}, ${data.plane.destinationState}, Brazil`,
+      )
+      console.log(distance)
+
+      if (distance > 6000) {
+        console.log(1)
+        total += distance * 0.197
+      } else if (distance >= 1500) {
+        console.log(2)
+        total += distance * 0.317
+      } else {
+        console.log(3)
+        total += distance * 0.338
+      }
+    }
+
+    setIsLoading(false)
+    navigate('/result', {
+      state: {
+        total: Number(total.toFixed(2)),
+      },
+    })
   }
 
   return (
     <Container>
+      <Loader visible={isLoading} />
       <header>
         <img src={logoImage} alt="Nativa Carbono" />
       </header>

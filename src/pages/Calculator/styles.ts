@@ -10,7 +10,7 @@ export const Container = styled.div`
 
   header {
     height: 320px;
-    width: 100vw;
+    width: 100%;
     background: url(${headerBackground});
     background-repeat: no-repeat;
     background-size: cover;
@@ -24,7 +24,7 @@ export const Container = styled.div`
   }
 
   main {
-    width: 100vw;
+    width: 100%;
     background: ${({ theme }) => theme.colors.base.white};
     border-radius: 48px 48px 0 0;
     margin-top: -48px;

@@ -22,5 +22,6 @@ export const mainTheme: DefaultTheme = {
   },
   shadows: {
     card: '-8px 8px 8px rgba(0, 0, 0, 0.1)',
+    input: '-4px 4px 8px rgba(0, 0, 0, 0.1)',
   },
 }

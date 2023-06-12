@@ -11,7 +11,7 @@ export const Container = styled.div`
   header {
     margin-top: 100px;
     height: 400px;
-    width: 100vw;
+    width: 100%;
     background: url(${headerBackground});
     background-repeat: no-repeat;
     background-size: cover;

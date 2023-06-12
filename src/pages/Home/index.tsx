@@ -1,8 +1,38 @@
+import { useEffect, useMemo, useState } from 'react'
 import { Container } from './styles'
 import { LinkButton } from '../../components/LinkButton'
 import logoImage from '../../assets/images/logo.svg'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../../config/firebase'
+import { IEmission } from '../Admin'
+import { formatNumber } from '../../utils/formatNumber'
 
 export function Home() {
+  const [emissions, setEmissions] = useState<IEmission[]>([])
+  const emissionsTotal = useMemo(
+    () => emissions.reduce((acc, curr) => acc + curr.total, 0),
+    [emissions],
+  )
+
+  useEffect(() => {
+    async function getEmissions() {
+      try {
+        const emissionsColletion = collection(db, 'emissions')
+        const response = await getDocs(emissionsColletion)
+        const data = response.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as IEmission[]
+
+        setEmissions(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    getEmissions()
+  }, [])
+
   return (
     <Container>
       <header>
@@ -19,13 +49,13 @@ export function Home() {
         </p>
         <div className="current-results">
           <div className="result-card">
-            <strong>156</strong>
+            <strong>{emissions.length}</strong>
             <span>Pessoas Calcularam</span>
           </div>
           <div className="result-card">
-            <strong>258 Kg</strong>
+            <strong>{formatNumber(emissionsTotal)}</strong>
             <span>
-              De CO<sub>2</sub> Calculados
+              Kg De CO<sub>2</sub> Calculados
             </span>
           </div>
         </div>

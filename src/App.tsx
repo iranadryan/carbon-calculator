@@ -5,6 +5,8 @@ import { mainTheme } from './assets/styles/theme/main'
 
 import { Home } from './pages/Home'
 import { Calculator } from './pages/Calculator'
+import { Result } from './pages/Result'
+import { Admin } from './pages/Admin'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
   {
     path: '/calculator',
     element: <Calculator />,
+  },
+  {
+    path: '/result',
+    element: <Result />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
   },
 ])
 
