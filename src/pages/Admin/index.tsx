@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getDocs, collection, where, query } from 'firebase/firestore'
+import {
+  getDocs,
+  collection,
+  where,
+  query,
+  updateDoc,
+} from 'firebase/firestore'
 import { Container } from './styles'
 import { db } from '../../config/firebase'
 import { formatNumber } from '../../utils/formatNumber'
@@ -28,6 +34,48 @@ export function Admin() {
     [emissions],
   )
 
+  async function getEmissions() {
+    try {
+      setIsLoading(true)
+      const collectionRef = collection(db, 'emissions')
+      const q = query(collectionRef, where('isNeutralized', '==', false))
+      const [responseTotal, response] = await Promise.all([
+        getDocs(collectionRef),
+        getDocs(q),
+      ])
+      const dataTotal = responseTotal.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })) as IEmission[]
+      const data = response.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })) as IEmission[]
+
+      setTotalEmissions(dataTotal)
+      setEmissions(data)
+      setIsLoading(false)
+    } catch (err) {
+      setIsLoading(false)
+      console.log(err)
+    }
+  }
+
+  async function handleNeutralize() {
+    setIsLoading(true)
+    const collectionRef = collection(db, 'emissions')
+    const q = query(collectionRef, where('isNeutralized', '==', false))
+    const response = await getDocs(q)
+
+    await Promise.all(
+      response.docs.map((item) => {
+        return updateDoc(item.ref, { isNeutralized: true })
+      }),
+    )
+
+    getEmissions()
+  }
+
   function formatPhoneNumber(number: string) {
     if (number === '') {
       return ''
@@ -54,33 +102,6 @@ export function Admin() {
   }
 
   useEffect(() => {
-    async function getEmissions() {
-      try {
-        setIsLoading(true)
-        const collectionRef = collection(db, 'emissions')
-        const q = query(collectionRef, where('isNeutralized', '==', false))
-        const [responseTotal, response] = await Promise.all([
-          getDocs(collectionRef),
-          getDocs(q),
-        ])
-        const dataTotal = responseTotal.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        })) as IEmission[]
-        const data = response.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        })) as IEmission[]
-
-        setTotalEmissions(dataTotal)
-        setEmissions(data)
-        setIsLoading(false)
-      } catch (err) {
-        setIsLoading(false)
-        console.log(err)
-      }
-    }
-
     getEmissions()
   }, [])
 
@@ -104,7 +125,7 @@ export function Admin() {
           <img src={excelIcon} alt="Excel" />
           Exportar
         </button>
-        {/* <button>Neutralizar</button> */}
+        <button onClick={handleNeutralize}>Neutralizar</button>
       </div>
       <table>
         <thead>
@@ -115,6 +136,13 @@ export function Admin() {
           </tr>
         </thead>
         <tbody>
+          {emissions.length === 0 && (
+            <tr>
+              <td colSpan={3} className="empty-message">
+                Nenhuma emissão a ser neutralizada
+              </td>
+            </tr>
+          )}
           {emissions.map((emission) => (
             <tr key={emission.id}>
               <td>{formatNumber(emission.total)} Kg</td>

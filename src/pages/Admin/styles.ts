@@ -54,6 +54,7 @@ export const Container = styled.div`
     border-collapse: collapse;
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: ${({ theme }) => theme.shadows.card};
 
     th,
     td {
@@ -77,6 +78,13 @@ export const Container = styled.div`
 
         &:nth-child(even) {
           background: #f2f2f2;
+        }
+
+        .empty-message {
+          padding: 32px 16px;
+          text-align: center;
+          font-weight: 600;
+          color: ${({ theme }) => theme.colors.base[300]};
         }
       }
     }
