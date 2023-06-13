@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 
 export const LinkButton = styled(Link)`
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   height: 60px;
   background: ${({ theme }) => theme.gradients.main};
   border-radius: 999px;

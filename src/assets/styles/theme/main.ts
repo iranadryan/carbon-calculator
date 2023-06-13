@@ -13,7 +13,7 @@ export const mainTheme: DefaultTheme = {
       700: '#424242',
     },
     primary: {
-      '500': '#669933',
+      '500': '#89B53C',
     },
   },
   gradients: {

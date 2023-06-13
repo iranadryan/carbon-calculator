@@ -7,8 +7,10 @@ import { Button } from '../../components/Button'
 import { formatNumber } from '../../utils/formatNumber'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../../config/firebase'
+import { Loader } from '../../components/Loader'
 
 export function Result() {
+  const [isLoading, setIsLoading] = useState(false)
   const [clientName, setClientName] = useState('')
   const [clientWhatsapp, setClientWhatsapp] = useState('')
 
@@ -17,6 +19,7 @@ export function Result() {
   const { total } = location.state as { total: number }
 
   async function handleSubmitEmission() {
+    setIsLoading(true)
     const emissionCollection = collection(db, 'emissions')
     await addDoc(emissionCollection, {
       total,
@@ -25,11 +28,13 @@ export function Result() {
       isNeutralized: false,
     })
 
+    setIsLoading(false)
     navigate('/')
   }
 
   return (
     <Container>
+      <Loader visible={isLoading} />
       <header>
         <img src={logoImage} alt="Nativa Carbono" />
       </header>
@@ -38,7 +43,10 @@ export function Result() {
           <h2>Resultado do Cálculo</h2>
           <p>Baseado nas suas respostas sua emissão foi de:</p>
           <span className="result-value">
-            {formatNumber(total)} Kg de CO<sub>2</sub>
+            {formatNumber(total)} Kg{' '}
+            <span className="unit">
+              de CO<sub>2</sub>
+            </span>
           </span>
           <p className="contact-text">
             Insira seu nome e Whatsapp para receber os dados referentes a

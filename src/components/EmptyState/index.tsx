@@ -6,7 +6,7 @@ export function EmptyState() {
     <Container>
       <img src={emptyIllustrationImage} alt="Lista vazia" />
       <h4>Nenhum selecionado</h4>
-      <span>Selecione pelo menos um veículo para calcular</span>
+      <span>Selecione um ou mais veículos para calcular</span>
     </Container>
   )
 }

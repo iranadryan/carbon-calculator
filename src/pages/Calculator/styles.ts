@@ -35,7 +35,8 @@ export const Container = styled.div`
 
     .content {
       width: 100%;
-      max-width: 664px;
+      max-width: calc(664px + 32px);
+      padding: 0 16px;
       margin-top: 48px;
       display: flex;
       flex-direction: column;
@@ -165,6 +166,30 @@ export const Container = styled.div`
 
       button {
         margin: 32px auto 48px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    main {
+      .content {
+        .vehicles-filters {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .selected-data {
+          .data-card {
+            section {
+              flex-direction: column;
+              align-items: stretch;
+
+              input,
+              select {
+                width: 100%;
+              }
+            }
+          }
+        }
       }
     }
   }

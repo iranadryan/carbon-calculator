@@ -26,7 +26,8 @@ export const Container = styled.div`
 
   main {
     width: 100%;
-    max-width: 492px;
+    max-width: calc(492px + 32px);
+    padding: 0 16px;
     align-self: center;
     margin-top: 52px;
     display: flex;
@@ -42,9 +43,9 @@ export const Container = styled.div`
     }
 
     .current-results {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 24px;
       margin-top: 20px;
 
       .result-card {
@@ -77,6 +78,14 @@ export const Container = styled.div`
 
     strong {
       display: inline-block;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    main {
+      .current-results {
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
   }
 `

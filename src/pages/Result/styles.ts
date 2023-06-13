@@ -35,7 +35,8 @@ export const Container = styled.div`
 
     .content {
       width: 100%;
-      max-width: 664px;
+      max-width: calc(664px + 32px);
+      padding: 0 16px;
       margin-top: 48px;
       display: flex;
       flex-direction: column;
@@ -107,6 +108,23 @@ export const Container = styled.div`
 
       button {
         margin: 12px auto 48px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    main {
+      .content {
+        .result-value {
+          .unit {
+            display: none;
+          }
+        }
+
+        .contact-input {
+          grid-template-columns: repeat(1, 1fr);
+          grid-gap: 12px;
+        }
       }
     }
   }

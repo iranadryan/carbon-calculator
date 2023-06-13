@@ -6,8 +6,10 @@ import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../config/firebase'
 import { IEmission } from '../Admin'
 import { formatNumber } from '../../utils/formatNumber'
+import { Loader } from '../../components/Loader'
 
 export function Home() {
+  const [isLoading, setIsLoading] = useState(true)
   const [emissions, setEmissions] = useState<IEmission[]>([])
   const emissionsTotal = useMemo(
     () => emissions.reduce((acc, curr) => acc + curr.total, 0),
@@ -17,6 +19,7 @@ export function Home() {
   useEffect(() => {
     async function getEmissions() {
       try {
+        setIsLoading(true)
         const emissionsColletion = collection(db, 'emissions')
         const response = await getDocs(emissionsColletion)
         const data = response.docs.map((doc) => ({
@@ -24,8 +27,10 @@ export function Home() {
           id: doc.id,
         })) as IEmission[]
 
+        setIsLoading(false)
         setEmissions(data)
       } catch (err) {
+        setIsLoading(false)
         console.log(err)
       }
     }
@@ -35,6 +40,7 @@ export function Home() {
 
   return (
     <Container>
+      <Loader visible={isLoading} />
       <header>
         <img src={logoImage} alt="Nativa Carbono" />
       </header>

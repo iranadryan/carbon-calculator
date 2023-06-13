@@ -1,7 +1,8 @@
 import { styled } from 'styled-components'
 
 export const Button = styled.button`
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   height: 60px;
   background: ${({ theme }) => theme.gradients.main};
   border-radius: 999px;

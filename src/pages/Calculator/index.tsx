@@ -200,7 +200,7 @@ export function Calculator() {
             Calculadora de Emissão de CO<sub>2</sub>
           </h2>
           <p>
-            Selecione os tipos de veículos utilizados em seu trajeto até o
+            Selecione todos os tipos de veículos utilizados em seu trajeto até o
             evento e preencha as informações necessárias.
           </p>
           <div className="vehicles-filters">
